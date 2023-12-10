@@ -1,74 +1,53 @@
 #!/usr/bin/python3
-# Public instance attributes
-'''
-    class Base Model
-'''
+""" This Module defines the Base Model Class
+"""
+import json
+import uuid
 from datetime import datetime
 import models
-import uuid
 
 
 class BaseModel():
-    '''
-        BaseModel definition
-    '''
+    """ Defines common Attributes
+    and methods for other classes
+    """
 
-    id = ''
-    created_at = datetime.now()
-    updated_at = datetime.now()
+    id = ""
+    created_at = None
+    updated_at = None
 
     def __init__(self, *args, **kwargs):
-        '''
-            initialise values
-            Re-created an instance with
-            dictionary representation
-        '''
-        format = '%Y-%m-%dT%H:%M:%S.%f'
+        """ Initialize values
+        for object creation
+        """
         if kwargs:
             for key, value in kwargs.items():
                 if key != '__class__':
-                    if key in ['created_at', 'updated_at']:
-                        value = datetime.strptime(value, format)
+                    if key == 'created_at' or key == 'updated_at':
+                        value = datetime.fromisoformat(value)
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            '''
-                create a unique FileStorage instance
-                for your application
-            '''
             models.storage.new(self)
 
     def __str__(self):
-        '''
-            Return:
-                class name
-                class id
-                class dictionary
-        '''
         return ("[{}] ({}) {}".format(type(self).__name__,
-                self.id, self.__dict__))
+                                      self.id, self.__dict__))
 
-    '''
-        Public instance methods
-    '''
     def save(self):
-        '''
-            updates the public instances attrib. update_at
-            with cuyrrent datetime
-        '''
         self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
-        '''
-            Return:
-                dictionary containing keys/values
-                of __dict__ of instance
-        '''
-        my_dict = dict(self.__dict__)
-        my_dict['__class__'] = self.__class__.__name__
-        my_dict['created_at'] = self.created_at.isoformat()
-        my_dict['updated_at'] = self.updated_at.isoformat()
-        return my_dict
+        mydict = {}
+        for key, value in self.__dict__.items():
+            if isinstance(value, datetime):
+                mydict[key] = value.isoformat()
+            else:
+                mydict[key] = value
+        return {
+                **mydict,
+                '__class__': type(self).__name__
+                }
