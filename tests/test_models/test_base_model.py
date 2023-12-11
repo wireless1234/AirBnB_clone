@@ -7,7 +7,6 @@ class TestBaseModel(unittest.TestCase):
 
     def setUp(self):
         self.myobject = BaseModel()
-        self.myobject2 = BaseModel('name': "isa", 'age': 26)
 
     def tearDown(self):
         pass
@@ -26,8 +25,9 @@ class TestBaseModel(unittest.TestCase):
 
     def test_return_str(self):
         self.assertEqual(print(self.myobject),
-                         print(f"[{type(self.myobject).__name__}] ({se\
-                                 lf.myobject.id}) {self.myobject.__dict__}"))
+                         print(f"[{type(self.myobject).__name__}] "
+                               f"({self.myobject.id}) {self.myobject.__dict__}"
+                               ))
 
     def test_save(self):
         last_save = self.myobject.updated_at
