@@ -33,14 +33,22 @@ class BaseModel():
             models.storage.new(self)
 
     def __str__(self):
+        """
+        String representation of object
+        """
         return ("[{}] ({}) {}".format(type(self).__name__,
                                       self.id, self.__dict__))
 
     def save(self):
+        """Saves Object to storage
+        """
         self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
+        """
+        Return dictionary representation of object
+        """
         mydict = {}
         for key, value in self.__dict__.items():
             if isinstance(value, datetime):
