@@ -1,4 +1,4 @@
-# pbnb - The console (aka AirBnB console)
+# AirBnB - The console (aka AirBnB console)
 The goal of this project is to create a python console that manage pbnb objects.
 
 ## Command Interpreter: 
@@ -24,4 +24,4 @@ The goal of this project is to create a python console that manage pbnb objects.
 ## Tags
 - Python
 - Isa Isa Sulaiman
-_ Lawal Tajudeen Ogunsola
+- Lawal Tajudeen Ogunsola
